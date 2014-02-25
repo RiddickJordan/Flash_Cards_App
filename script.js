@@ -15,7 +15,6 @@
 		});
 	}
 
-
 	function makeMenu (dataArray, type) {
 		menuCount = dataArray.length;
 		//menuHTML = "<ul>\n";
@@ -25,7 +24,6 @@
 			else{menuHTML = menuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + dataArray[i].name + '</h2></div></div>\n'; }
 			//if (i == 0) {menuHTML = menuHTML + '<li class="selectionMenu" menuType="' + type + '" itemID="' +  dataArray[i].id + '">' + 'Glaucoma Review' + "</li>\n";}
 			//else {menuHTML = menuHTML + '<li class="selectionMenu" menuType="' + type + '" itemID="' +  dataArray[i].id + '">' + dataArray[i].name + "</li>\n";}
-			
 		}
 		//menuHTML = menuHTML + '</ul>';
 		console.log(menuHTML);
@@ -48,8 +46,8 @@
 	$('.deckList').html(makeMenu(getDecks(),'deck'));
 	$('.deck').click(function(){
 		$('.deckList').toggle();
-		$('.card, .footer, .toMenu').toggle();
 		initCards();
+		$('.card, .footer, .toMenu').toggle();
 	});
 
 	
