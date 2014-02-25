@@ -1,6 +1,6 @@
 (function(window, $, undefined){
 
-	$(".card, .footer").toggle();
+	$(".card, .footer, .toMenu").toggle();
 	
 	function initCards(){
 		$(".definition").toggle();
@@ -48,7 +48,7 @@
 	$('.deckList').html(makeMenu(getDecks(),'deck'));
 	$('.deck').click(function(){
 		$('.deckList').toggle();
-		$('.card, .footer').toggle();
+		$('.card, .footer, .toMenu').toggle();
 		initCards();
 	});
 
