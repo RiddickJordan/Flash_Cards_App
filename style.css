@@ -200,9 +200,14 @@ h2{
   margin: 0 auto;
 }
 
+p{
+  display: inline-block;
+}
+
 .term p{
   vertical-align:middle;
   font-size: 5rem;
+  word-wrap: normal;
 }
 
 .definition p{

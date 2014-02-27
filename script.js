@@ -4,13 +4,23 @@
 	$(".card, .footer, .toMenu, .titleSlide").toggle();
 	var deck = {};
 	var cardIndex = 0;
-	
+	var thisQ = "";
+	var thisA = "";
 	function showNextCard(){
-		$('.term p').text(deck[cardIndex]['q']['text']);
-		$('.definition p').text(deck[cardIndex]['a']['text']); 
+		thisQ = deck[cardIndex]['q']['text'];
+		thisA = deck[cardIndex]['a']['text'];
+		$('.term p').text(thisQ);
+		$('.definition p').text(thisA); 
 		cardIndex += 1
 	}
 
+	/*
+		The current JSON has funky &nbsp; characters instead of normal spaces.  This causes
+		the <p> tags to not word wrap properly. Once this issue is resolved we will implement
+		the method described in the link below, or something similar to it, to insure text 
+		appears in an approriate size based on the available room.  The alternative is to have
+		the user scroll.
+	*/
 
 	function defineDeck(d){
 		deck = d.decks["1"].cards;
@@ -20,14 +30,11 @@
 
 	function initCards(){
 
-		console.log("go fuck yourself");
-
 		$.getJSON("sd.json", function(d) {
 			defineDeck(d);
     	}).fail( function(d, textStatus, error) {
         	console.error("getJSON failed, status: " + textStatus + ", error: "+error)
     	});
-
 
 		$(".definition").toggle();
 		$(".confirm").toggle();
