@@ -1,18 +1,33 @@
 (function(window, $, undefined){
 
-	$(".card, .footer, .toMenu").toggle();
+	
+	$(".card, .footer, .toMenu, .titleSlide").toggle();
 	
 	function initCards(){
+
+		console.log("go fuck yourself");
+
+		$.getJSON("sd.json", function(d) {
+        	console.log(d);
+    	}).fail( function(d, textStatus, error) {
+        	console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+    	});
+
+
 		$(".definition").toggle();
 		$(".confirm").toggle();
 
 		$(".reveal").click(function(){
-			$(".term").toggle();
-			$(".definition").toggle();
-
-			$(".confirm").toggle();
+			$(".term, .definition, .confirm").toggle();
 			$(this).toggle();
 		});
+
+		
+
+
+
+
+
 	}
 
 	function makeMenu (dataArray, type) {
@@ -26,7 +41,7 @@
 			//else {menuHTML = menuHTML + '<li class="selectionMenu" menuType="' + type + '" itemID="' +  dataArray[i].id + '">' + dataArray[i].name + "</li>\n";}
 		}
 		//menuHTML = menuHTML + '</ul>';
-		console.log(menuHTML);
+		//console.log(menuHTML);
 		return menuHTML;
 	}
 
@@ -38,16 +53,25 @@
 			'description': "Description here"};
 			deckObject[i]= deckInfo;
 		}
-		console.log(deckObject);
+		//console.log(deckObject);
 		return deckObject;
 	}
 
 	
 	$('.deckList').html(makeMenu(getDecks(),'deck'));
+
 	$('.deck').click(function(){
-		$('.deckList').toggle();
+		$('.deckList, .titleSlide').toggle();
+	});
+
+	$('.startDeck').click(function(){
 		initCards();
-		$('.card, .footer, .toMenu').toggle();
+		$('.titleSlide, .card, .footer, .toMenu').toggle();
+	});
+
+	$('.toMenu').click(function(){
+		$('.card, .footer, .toMenu, .deckList').toggle();
+		
 	});
 
 	
