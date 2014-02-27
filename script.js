@@ -2,13 +2,28 @@
 
 	
 	$(".card, .footer, .toMenu, .titleSlide").toggle();
+	var deck = {};
+	var cardIndex = 0;
 	
+	function showNextCard(){
+		$('.term p').text(deck[cardIndex]['q']['text']);
+		$('.definition p').text(deck[cardIndex]['a']['text']); 
+		cardIndex += 1
+	}
+
+
+	function defineDeck(d){
+		deck = d.decks["1"].cards;
+		console.log(deck);
+		showNextCard();
+	};
+
 	function initCards(){
 
 		console.log("go fuck yourself");
 
 		$.getJSON("sd.json", function(d) {
-        	console.log(d);
+			defineDeck(d);
     	}).fail( function(d, textStatus, error) {
         	console.error("getJSON failed, status: " + textStatus + ", error: "+error)
     	});
@@ -22,11 +37,11 @@
 			$(this).toggle();
 		});
 
-		
-
-
-
-
+		$(".confirm").click(function(){
+			showNextCard();
+			$(".term, .definition, .reveal").toggle();
+			$(this).toggle();
+		});
 
 	}
 
