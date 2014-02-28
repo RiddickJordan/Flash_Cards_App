@@ -1,27 +1,60 @@
 (function(window, $, undefined){
 
-	
 	$(".card, .footer, .toMenu, .titleSlide").toggle();
-	var deck = {};
+
+	function showScreen(_state){
+		//HIDE ERRYTHING
+		switch (_state){
+			case "menu":
+				//show that menu
+				break;
+			case "title":
+				//show that title
+				break;
+			case "card":
+				//show that card
+				break;
+		}
+	}
+
+	function resizeMyText(_obj){
+		var $quote = _obj;
+	    
+	    var $numWords = $quote.text().split(" ").length;
+	    console.log($numWords)
+	    
+	    if (($numWords >= 1) && ($numWords < 8)) {
+	        $quote.css("font-size", "5rem");
+	    }
+	    else if (($numWords >= 8) && ($numWords < 20)) {
+	        $quote.css("font-size", "4rem");
+	    }
+	    else if (($numWords >= 20) && ($numWords < 30)) {
+	        $quote.css("font-size", "3.5rem");
+	    }
+	    else if (($numWords >= 30) && ($numWords < 40)) {
+	        $quote.css("font-size", "3rem");
+	    }
+	    else {
+	        $quote.css("font-size", "2rem");
+	    }
+	}
+
 	var cardIndex = 0;
-	var thisQ = "";
-	var thisA = "";
 	function showNextCard(){
 		thisQ = deck[cardIndex]['q']['text'];
 		thisA = deck[cardIndex]['a']['text'];
 		$('.term p').text(thisQ);
 		$('.definition p').text(thisA); 
-		cardIndex += 1
+
+		cardIndex += 1;
+
+		resizeMyText($('.term p'));
+		resizeMyText($('.definition p'));
 	}
 
-	/*
-		The current JSON has funky &nbsp; characters instead of normal spaces.  This causes
-		the <p> tags to not word wrap properly. Once this issue is resolved we will implement
-		the method described in the link below, or something similar to it, to insure text 
-		appears in an approriate size based on the available room.  The alternative is to have
-		the user scroll.
-	*/
 
+	var deck = {};
 	function defineDeck(d){
 		deck = d.decks["1"].cards;
 		console.log(deck);
