@@ -204,13 +204,13 @@ p{
   display: inline-block;
 }
 
-.term p{
+.question p{
   vertical-align:middle;
   font-size: 5rem;
   word-wrap: normal;
 }
 
-.definition p{
+.answer p{
   vertical-align:middle;
   font-size:2rem;
   padding:0 30px;
@@ -316,7 +316,4 @@ and (max-width : 480px)  {
   html{
     font-size: 10px;
   }
-}
-
-
 }

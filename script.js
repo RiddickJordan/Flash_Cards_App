@@ -1,20 +1,27 @@
 (function(window, $, undefined){
 
-	$(".card, .footer, .toMenu, .titleSlide").toggle();
-
+	var lastScreen = $('.forTitle, .forCard, .forMenu');
+	var nextScreen;
 	function showScreen(_state){
-		//HIDE ERRYTHING
+		$(lastScreen).toggle()
 		switch (_state){
 			case "menu":
-				//show that menu
+				nextScreen = $('.forMenu');
 				break;
 			case "title":
-				//show that title
+				nextScreen = $('.forTitle');
 				break;
 			case "card":
-				//show that card
+				nextScreen = $('.forCard');
+				cardIndex = 0;
 				break;
 		}
+		$(nextScreen).toggle();
+		lastScreen = nextScreen;
+	}
+
+	function flipCard(){
+		$(".question, .answer, .reveal, .confirm").toggle();
 	}
 
 	function resizeMyText(_obj){
@@ -44,13 +51,13 @@
 	function showNextCard(){
 		thisQ = deck[cardIndex]['q']['text'];
 		thisA = deck[cardIndex]['a']['text'];
-		$('.term p').text(thisQ);
-		$('.definition p').text(thisA); 
+		$('.question p').text(thisQ);
+		$('.answer p').text(thisA); 
 
 		cardIndex += 1;
 
-		resizeMyText($('.term p'));
-		resizeMyText($('.definition p'));
+		resizeMyText($('.question p'));
+		resizeMyText($('.answer p'));
 	}
 
 
@@ -62,27 +69,23 @@
 	};
 
 	function initCards(){
-
 		$.getJSON("sd.json", function(d) {
 			defineDeck(d);
     	}).fail( function(d, textStatus, error) {
         	console.error("getJSON failed, status: " + textStatus + ", error: "+error)
     	});
 
-		$(".definition").toggle();
+		$(".answer").toggle();
 		$(".confirm").toggle();
 
 		$(".reveal").click(function(){
-			$(".term, .definition, .confirm").toggle();
-			$(this).toggle();
+			flipCard();
 		});
 
 		$(".confirm").click(function(){
 			showNextCard();
-			$(".term, .definition, .reveal").toggle();
-			$(this).toggle();
+			flipCard();
 		});
-
 	}
 
 	function makeMenu (dataArray, type) {
@@ -112,22 +115,25 @@
 		return deckObject;
 	}
 
-	
-	$('.deckList').html(makeMenu(getDecks(),'deck'));
-
-	$('.deck').click(function(){
-		$('.deckList, .titleSlide').toggle();
-	});
-
-	$('.startDeck').click(function(){
+	function init(){
 		initCards();
-		$('.titleSlide, .card, .footer, .toMenu').toggle();
-	});
+		$('.deckList').html(makeMenu(getDecks(),'deck'));
+		showScreen("menu");
 
-	$('.toMenu').click(function(){
-		$('.card, .footer, .toMenu, .deckList').toggle();
-		
-	});
+		$('.deck').click(function(){
+			showScreen("title");
+		});
 
+		$('.startDeck').click(function(){
+			
+			showScreen("card");
+		});
+
+		$('.toMenu').click(function(){
+			showScreen("menu");
+		});
+	}
+
+	init();
 	
  })(window, jQuery);
