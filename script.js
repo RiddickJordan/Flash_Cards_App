@@ -60,34 +60,6 @@
 		resizeMyText($('.answer p'));
 	}
 
-
-	var deck = {};
-	function defineDeck(d){
-		deck = d.decks["1"].cards;
-		console.log(deck);
-		showNextCard();
-	};
-
-	function initCards(){
-		$.getJSON("sd.json", function(d) {
-			defineDeck(d);
-    	}).fail( function(d, textStatus, error) {
-        	console.error("getJSON failed, status: " + textStatus + ", error: "+error)
-    	});
-
-		$(".answer").toggle();
-		$(".confirm").toggle();
-
-		$(".reveal").click(function(){
-			flipCard();
-		});
-
-		$(".confirm").click(function(){
-			showNextCard();
-			flipCard();
-		});
-	}
-
 	function makeMenu (dataArray, type) {
 		menuCount = dataArray.length;
 		//menuHTML = "<ul>\n";
@@ -115,25 +87,49 @@
 		return deckObject;
 	}
 
-	function init(){
-		initCards();
-		$('.deckList').html(makeMenu(getDecks(),'deck'));
-		showScreen("menu");
+	var deck = {};
+	function defineDeck(d){
+		deck = d.decks["1"].cards;
+		showNextCard();
+	};
 
+	function init(){
+		//Generate Menu
+		$('.deckList').html(makeMenu(getDecks(),'deck'));
+
+		//Load JSON that will define cards
+		$.getJSON("sd.json", function(d) {
+			defineDeck(d);
+    	}).fail( function(d, textStatus, error) {
+        	console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+    	});
+
+		//Navigation click handlers
 		$('.deck').click(function(){
 			showScreen("title");
 		});
-
 		$('.startDeck').click(function(){
-			
 			showScreen("card");
 		});
-
 		$('.toMenu').click(function(){
 			showScreen("menu");
 		});
+
+    	//Set initial state of card
+		$(".answer, .confirm").toggle();
+
+		//Card interaction click handlers
+		$(".reveal").click(function(){
+			flipCard();
+		});
+		$(".confirm").click(function(){
+			showNextCard();
+			flipCard();
+		});
+
+		//Navigate to Menu
+		showScreen("menu");
 	}
 
 	init();
-	
  })(window, jQuery);
