@@ -37,7 +37,7 @@ a{
 
 .centered{
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
   width:95%;
 }
 
@@ -171,7 +171,7 @@ h2{
   top:5rem;
   bottom:5rem;
   padding:1rem;
-  text-align: center;
+  text-align: left;
   font-size: 0em;
 }
 
@@ -207,14 +207,11 @@ p{
 .question p{
   vertical-align:middle;
   font-size: 5rem;
-  word-wrap: normal;
 }
 
 .answer p{
   vertical-align:middle;
   font-size:2rem;
-  padding:0 30px;
-  height:100%;
 }
 
 .reveal, .confirm{
