@@ -1,27 +1,34 @@
 (function(window, $, undefined){
 
-	var lastScreen = $('.navIntro, .navDeckMenu, .navTitle, .navCard');
+	var lastScreen = $('.navIntro, .navCollectionMenu, .navDeckMenu, .navTitle, .navCard');
 	var nextScreen;
+	var lastState = "intro";
+	menuBtnDestination = "decks";
 	function showScreen(_state){
 		$(lastScreen).toggle()
 		switch (_state){
 			case "intro":
 				nextScreen = $('.navIntro');
 				break;
-			//case "collections":
-			//	nextScreen = $('.navCollectionMenu');
-			//	break;
+			case "collections":
+				nextScreen = $('.navCollectionMenu');
+				break;
 			case "decks":
 				nextScreen = $('.navDeckMenu');
+				menuBtnDestination = "collections";
 				break;
 			case "title":
 				nextScreen = $('.navTitle');
 				break;
-			case "card":
+			case "cards":
+				menuBtnDestination = "decks";
 				nextScreen = $('.navCard');
 				cardIndex = 0;
 				break;
 		}
+		$('.header').removeClass(lastState);
+		$('.header').addClass(_state);
+		lastState = _state;
 		$(nextScreen).toggle();
 		lastScreen = nextScreen;
 	}
@@ -101,14 +108,14 @@
 
 
 	function clearIntro(){
-		showScreen('decks');
+		showScreen('collections');
 	}
 
 	function init(){
 		//show splash screen
 
 		//Generate Collections Menu
-
+		$('.collectionsList').html(makeMenu(getDecks(),'deck'));
 
 		//Generate Deck Menu
 		$('.deckList').html(makeMenu(getDecks(),'deck'));
@@ -121,17 +128,20 @@
     	});
 
 		//Navigation click handlers
-		$('.deck').click(function(){
+		$('.collectionsList .deck').click(function(){
+			showScreen("decks");
+		});
+		$('.deckList .deck').click(function(){
 			showScreen("title");
 		});
 		$('.startDeck').click(function(){
-			showScreen("card");
+			showScreen("cards");
 		});
 		$('.abortDeck').click(function(){
 			showScreen("decks");
 		});
 		$('.toMenu').click(function(){
-			showScreen("decks");
+			showScreen(menuBtnDestination);
 		});
 
     	//Set initial state of card

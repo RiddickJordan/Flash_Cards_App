@@ -49,12 +49,20 @@ a{
   display:block;
 }
 
+.header.row.collections{
+  background-color: #37597F;
+}
+
 .icon{
   width: 5rem;
   height: 100%;
   display: inline-block;
   float:left;
   background-color: #88C3D0;
+}
+
+.collectionsList .icon{
+  background-color: #63A0E5;
 }
 
 .header .icon{
@@ -107,7 +115,7 @@ h2{
   text-overflow: ellipsis;
 }
 
-.deckList.row{
+.deckList.row, .collectionsList.row{
   top:5rem;
   bottom: 0;
   overflow-y: auto;
@@ -119,6 +127,10 @@ h2{
   height: 5rem;
   display: block;
   margin-bottom: 2px;
+}
+
+.collectionsList.row .deck{
+  background-color: #5082BA;
 }
 
 .title{
