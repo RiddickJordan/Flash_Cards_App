@@ -124,6 +124,9 @@
 		$('.startDeck').click(function(){
 			showScreen("card");
 		});
+		$('.abortDeck').click(function(){
+			showScreen("menu");
+		});
 		$('.toMenu').click(function(){
 			showScreen("menu");
 		});
@@ -143,7 +146,7 @@
 		//Navigate to Into Slide
 		showScreen("intro");
 		//Move past Intro Slide after 5 secons
-		//setTimeout(clearIntro,5000);
+		setTimeout(clearIntro,1000);
 	}
 
 	init();
