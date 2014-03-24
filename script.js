@@ -1,21 +1,24 @@
 (function(window, $, undefined){
 
-	var lastScreen = $('.forTitle, .forCard, .forMenu, .forIntro');
+	var lastScreen = $('.navIntro, .navDeckMenu, .navTitle, .navCard');
 	var nextScreen;
 	function showScreen(_state){
 		$(lastScreen).toggle()
 		switch (_state){
 			case "intro":
-				nextScreen = $('.forIntro');
+				nextScreen = $('.navIntro');
 				break;
-			case "menu":
-				nextScreen = $('.forMenu');
+			//case "collections":
+			//	nextScreen = $('.navCollectionMenu');
+			//	break;
+			case "decks":
+				nextScreen = $('.navDeckMenu');
 				break;
 			case "title":
-				nextScreen = $('.forTitle');
+				nextScreen = $('.navTitle');
 				break;
 			case "card":
-				nextScreen = $('.forCard');
+				nextScreen = $('.navCard');
 				cardIndex = 0;
 				break;
 		}
@@ -98,7 +101,7 @@
 
 
 	function clearIntro(){
-		showScreen('menu');
+		showScreen('decks');
 	}
 
 	function init(){
@@ -125,10 +128,10 @@
 			showScreen("card");
 		});
 		$('.abortDeck').click(function(){
-			showScreen("menu");
+			showScreen("decks");
 		});
 		$('.toMenu').click(function(){
-			showScreen("menu");
+			showScreen("decks");
 		});
 
     	//Set initial state of card
