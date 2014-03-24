@@ -294,7 +294,7 @@ h4{
   margin-left: 4rem;
 }
 
-.startDeck{
+.startDeck, .launchApp{
   text-align: center;
   margin: 3rem 2rem 0 6rem;
   padding:.3rem;

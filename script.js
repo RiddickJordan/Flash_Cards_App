@@ -1,10 +1,13 @@
 (function(window, $, undefined){
 
-	var lastScreen = $('.forTitle, .forCard, .forMenu');
+	var lastScreen = $('.forTitle, .forCard, .forMenu, .forIntro');
 	var nextScreen;
 	function showScreen(_state){
 		$(lastScreen).toggle()
 		switch (_state){
+			case "intro":
+				nextScreen = $('.forIntro');
+				break;
 			case "menu":
 				nextScreen = $('.forMenu');
 				break;
@@ -93,8 +96,18 @@
 		showNextCard();
 	};
 
+
+	function clearIntro(){
+		showScreen('menu');
+	}
+
 	function init(){
-		//Generate Menu
+		//show splash screen
+
+		//Generate Collections Menu
+
+
+		//Generate Deck Menu
 		$('.deckList').html(makeMenu(getDecks(),'deck'));
 
 		//Load JSON that will define cards
@@ -127,8 +140,10 @@
 			flipCard();
 		});
 
-		//Navigate to Menu
-		showScreen("menu");
+		//Navigate to Into Slide
+		showScreen("intro");
+		//Move past Intro Slide after 5 secons
+		//setTimeout(clearIntro,5000);
 	}
 
 	init();
