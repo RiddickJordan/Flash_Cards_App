@@ -1,6 +1,6 @@
 (function(window, $, undefined){
 
-	var lastScreen = $('.navIntro, .navCollectionMenu, .navDeckMenu, .navTitle, .navCard');
+	var lastScreen = $('.navIntro, .navCollectionMenu, .navDeckMenu, .navTitle, .navCard, .navWrapUp');
 	var nextScreen;
 	var lastState = "intro";
 	menuBtnDestination = "decks";
@@ -26,9 +26,11 @@
 				cardIndex = 0;
 				showNextCard();
 				if( $('.card').hasClass("answerTint") ){
-					console.log("twas vis");
 					flipCard("question");
 				}
+				break;
+			case "wrapUp":
+				nextScreen = $('.navWrapUp');
 				break;
 		}
 		$('.header').removeClass(lastState);
@@ -50,10 +52,7 @@
 	    
 	    var $numWords = $quote.text().split(" ").length;
 	    
-	    if (($numWords >= 1) && ($numWords < 8)) {
-	        $quote.css("font-size", "5rem");
-	    }
-	    else if (($numWords >= 8) && ($numWords < 20)) {
+	    if (($numWords < 20)) {
 	        $quote.css("font-size", "4rem");
 	    }
 	    else if (($numWords >= 20) && ($numWords < 30)) {
@@ -70,16 +69,24 @@
 	var cardIndex = 0;
 	var cardCount = 0;
 	function showNextCard(){
-		console.log(deck.length)
-		thisQ = deck[cardIndex]['q']['text'];
-		thisA = deck[cardIndex]['a']['text'];
-		$('.question p').text(thisQ);
-		$('.answer p').text(thisA); 
-		$('.icon h5').text(""+(cardIndex+1)+" of "+cardCount);
-		cardIndex += 1;
+		if(cardIndex == cardCount){
+			console.log('wrap it up');
+			showScreen("wrapUp");
+		}
+		else{
+			thisQ = deck[cardIndex]['q']['text'];
+			thisA = deck[cardIndex]['a']['text'];
+			$('.question p').text(thisQ);
+			$('.answer p').text(thisA); 
+			$('.icon h5').text(""+(cardIndex+1)+" of "+cardCount);
+			resizeMyText($('.question p'));
+			resizeMyText($('.answer p'));
+			cardIndex += 1;
+			flipCard("question");
+		}
+		
 
-		resizeMyText($('.question p'));
-		resizeMyText($('.answer p'));
+		
 	}
 
 	function makeMenu (dataArray, type) {
@@ -155,7 +162,7 @@
 		});
 
     	//Set initial state of card
-		$(".answer, .confirm").toggle();
+		$(".answer, .confirm, .wrapUp").toggle();
 
 		//Card interaction click handlers
 		$(".reveal").click(function(){
@@ -163,7 +170,7 @@
 		});
 		$(".confirm").click(function(){
 			showNextCard();
-			flipCard("question");
+			
 		});
 
 		//Navigate to Into Slide
