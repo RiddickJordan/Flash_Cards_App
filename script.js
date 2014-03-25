@@ -21,12 +21,14 @@
 				break;
 			case "decks":
 				nextScreen = $('.navDeckMenu');
+				//$('.toMenu div').text("BACK");
 				menuBtnDestination = "collections";
 				break;
 			case "title":
 				nextScreen = $('.navTitle');
 				break;
 			case "cards":
+				//$('.toMenu div').text("DECKS");
 				menuBtnDestination = "decks";
 				nextScreen = $('.navCard');
 				cardIndex = 0;
@@ -77,11 +79,11 @@
 		return menuHTML;
 	}
 
-	function getDecks() {
+	function getDecks(_menuType) {
 		var deckCount = 10;
 		var deckObject = [];
 		for (i=0;i<deckCount; i++) {
-			deckInfo = {"name": "Deck " + i, 'id': "deck-" + i,
+			deckInfo = {"name": _menuType+" " + i, 'id': _menuType+"-" + i,
 			'description': "Description here"};
 			deckObject[i]= deckInfo;
 		}
@@ -115,10 +117,10 @@
 
 	function init(){
 		//Generate Collections Menu
-		$('.collectionsList').html(makeMenu(getDecks(),'deck'));
+		$('.collectionsList').html(makeMenu(getDecks('Collection'),'collection'));
 
 		//Generate Deck Menu
-		$('.deckList').html(makeMenu(getDecks(),'deck'));
+		$('.deckList').html(makeMenu(getDecks('Deck'),'deck'));
 
 		//Load JSON that will define cards
 		$.getJSON("sd.json", function(d) {
