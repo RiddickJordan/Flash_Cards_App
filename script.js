@@ -24,6 +24,12 @@
 				menuBtnDestination = "decks";
 				nextScreen = $('.navCard');
 				cardIndex = 0;
+				showNextCard();
+				//if (lastFlip == "answer"){
+				if( $('.card').hasClass("answerTint") ){
+					console.log("twas vis");
+					flipCard("question");
+				}
 				break;
 		}
 		$('.header').removeClass(lastState);
@@ -32,16 +38,18 @@
 		$(nextScreen).toggle();
 		lastScreen = nextScreen;
 	}
-
-	function flipCard(){
+	var lastFlip = "";
+	function flipCard(_flipTo){
 		$(".question, .answer, .reveal, .confirm").toggle();
+		$('.card').toggleClass("answerTint");
+		console.log("flip");
+		lastFlip = _flipTo;
 	}
 
 	function resizeMyText(_obj){
 		var $quote = _obj;
 	    
 	    var $numWords = $quote.text().split(" ").length;
-	    console.log($numWords)
 	    
 	    if (($numWords >= 1) && ($numWords < 8)) {
 	        $quote.css("font-size", "5rem");
@@ -149,11 +157,11 @@
 
 		//Card interaction click handlers
 		$(".reveal").click(function(){
-			flipCard();
+			flipCard("answer");
 		});
 		$(".confirm").click(function(){
 			showNextCard();
-			flipCard();
+			flipCard("question");
 		});
 
 		//Navigate to Into Slide

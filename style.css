@@ -182,9 +182,16 @@ h2{
 
   top:5rem;
   bottom:5rem;
-  padding:1rem;
+  padding:1rem 5rem;
   text-align: left;
   font-size: 0em;
+}
+
+.card.row.answerTint{
+  background: -webkit-linear-gradient(left, #88C3D0 , #FFFFFF, #88C3D0); /* For Safari */
+  background: -o-linear-gradient(right, #88C3D0 , #FFFFFF, #88C3D0); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #88C3D0 , #FFFFFF, #88C3D0); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #88C3D0 , #FFFFFF, #88C3D0); /* Standard syntax */
 }
 
 .card.row:before{
@@ -279,6 +286,17 @@ p{
 .brand{
   margin: 5rem 5rem 0 0;
   top:0;
+}
+
+.card h3{
+  color:#bbb;
+}
+
+.card h4{
+  color:#000;
+  font-style:italic;
+  font-family: Georgia, serif;
+  margin-bottom: 2rem;
 }
 
 .description{
