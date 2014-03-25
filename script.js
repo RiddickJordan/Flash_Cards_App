@@ -25,7 +25,6 @@
 				nextScreen = $('.navCard');
 				cardIndex = 0;
 				showNextCard();
-				//if (lastFlip == "answer"){
 				if( $('.card').hasClass("answerTint") ){
 					console.log("twas vis");
 					flipCard("question");
@@ -69,12 +68,14 @@
 	}
 
 	var cardIndex = 0;
+	var cardCount = 0;
 	function showNextCard(){
+		console.log(deck.length)
 		thisQ = deck[cardIndex]['q']['text'];
 		thisA = deck[cardIndex]['a']['text'];
 		$('.question p').text(thisQ);
 		$('.answer p').text(thisA); 
-
+		$('.icon h5').text(""+(cardIndex+1)+" of "+cardCount);
 		cardIndex += 1;
 
 		resizeMyText($('.question p'));
@@ -111,6 +112,7 @@
 	var deck = {};
 	function defineDeck(d){
 		deck = d.decks["1"].cards;
+		cardCount = deck.length;
 		showNextCard();
 	};
 

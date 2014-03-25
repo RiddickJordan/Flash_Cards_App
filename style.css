@@ -61,6 +61,12 @@ a{
   background-color: #88C3D0;
 }
 
+.icon h5{
+  line-height: 5rem;
+  vertical-align: center;
+  text-align: center;
+}
+
 .collectionsList .icon{
   background-color: #63A0E5;
 }
