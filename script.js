@@ -58,10 +58,10 @@
 			showScreen("wrapUp");
 		}
 		else{
-			thisQ = deck[cardIndex]['q']['text'];
-			thisA = deck[cardIndex]['a']['text'];
-			$('.question p').text(thisQ);
-			$('.answer p').text(thisA); 
+			thisQ = deck[cardIndex]['q']['image'] == "" ? '<p>' + deck[cardIndex]['q']['text'] + '</p>': '<img src="'+deck[cardIndex]['q']['image']+'">';
+			thisA = deck[cardIndex]['a']['image'] == "" ? '<p>' + deck[cardIndex]['a']['text'] + '</p>': '<img src="'+deck[cardIndex]['a']['image']+'">';
+			$('.question .cardContent').html(thisQ);
+			$('.answer .cardContent').html(thisA);
 			$('.icon h5').text(""+(cardIndex+1)+" of "+cardCount);
 			resizeMyText($('.question p'));
 			resizeMyText($('.answer p'));
@@ -105,7 +105,7 @@
 
 	var deck = {};
 	function defineDeck(d){
-		deck = d.decks["1"].cards;
+		deck = d.decks["2"].cards;
 		cardCount = deck.length;
 		showNextCard();
 	};
