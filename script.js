@@ -11,31 +11,33 @@
 	}
 
 	function showScreen(_state){
-		$(lastScreen).toggle()
 		switch (_state){
 			case "intro":
-				nextScreen = $('.navIntro');
+				nextScreen = $(".navIntro");
 				break;
 			case "collections":
+				$('.title h1').text("ShuffleDeck Collections");
 				nextScreen = $('.navCollectionMenu');
 				break;
 			case "decks":
-				nextScreen = $('.navDeckMenu');
-				//$('.toMenu div').text("BACK");
+				$('.title h1').text("REVIEW SESSION: Glaucoma Basics");
+				$('.toMenu div').text("BACK");
 				menuBtnDestination = "collections";
+				nextScreen = $('.navDeckMenu');
 				break;
 			case "title":
 				nextScreen = $('.navTitle');
 				break;
 			case "cards":
-				//$('.toMenu div').text("DECKS");
-				menuBtnDestination = "decks";
-				nextScreen = $('.navCard');
+				$('.title h1').text("REVIEW SESSION: Glaucoma Basics");
+				$('.toMenu div').text("DECKS");
 				cardIndex = 0;
 				showNextCard();
 				if( $('.card').hasClass("answerTint") ){
 					flipCard();
 				}
+				menuBtnDestination = "decks";
+				nextScreen = $('.navCard');
 				break;
 			case "wrapUp":
 				nextScreen = $('.navWrapUp');
@@ -44,7 +46,7 @@
 		$('.header').removeClass(lastState);
 		$('.header').addClass(_state);
 		lastState = _state;
-
+		$(lastScreen).toggle();
 		$(nextScreen).fadeToggle();
 		lastScreen = nextScreen;
 	}
@@ -91,6 +93,16 @@
 		return deckObject;
 	}
 
+	function buildCollectionMenu(_collections){
+		collectionsMenuHTML = '';
+		for(var key in _collections){
+			console.log(_collections[key]);
+			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + _collections[key].name + ' ('+_collections[key].decklist.length+ ')</h2></div></div>\n';
+		}
+
+		return collectionsMenuHTML;
+	}
+
 	var deck = {};
 	function defineDeck(d){
 		deck = d.decks["1"].cards;
@@ -114,25 +126,34 @@
 	        $quote.css("font-size", "2rem");
 	    }
 	}
+	var theJSON = {};
+	function makeGlobal(_json){
+		theJSON = _json;
+	}
 
 	function init(){
-		//Generate Collections Menu
-		$('.collectionsList').html(makeMenu(getDecks('Collection'),'collection'));
-
-		//Generate Deck Menu
-		$('.deckList').html(makeMenu(getDecks('Deck'),'deck'));
-
 		//Load JSON that will define cards
-		$.getJSON("sd.json", function(d) {
+		$.getJSON("sd_v2.json", function(d) {
+			console.log(d);
+			$('.collectionsList').html(buildCollectionMenu(d.collections));
+			$('.collectionsList .deck').click(function(){
+				showScreen("decks");
+			});
+
 			defineDeck(d);
     	}).fail( function(d, textStatus, error) {
         	console.error("getJSON failed, status: " + textStatus + ", error: "+error)
     	});
 
+		//Generate Collections Menu
+		
+
+		//Generate Deck Menu
+		$('.deckList').html(makeMenu(getDecks('Deck'),'deck'));
+
+
 		//Navigation click handlers
-		$('.collectionsList .deck').click(function(){
-			showScreen("decks");
-		});
+		
 		$('.deckList .deck').click(function(){
 			showScreen("title");
 		});
@@ -146,7 +167,7 @@
 			showScreen(menuBtnDestination);
 		});
 
-    	//Set initial state of cards
+    	//Set initial state of card system
 		$(".answer, .confirm, .wrapUp").toggle();
 
 		//Card interaction click handlers
