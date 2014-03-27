@@ -85,11 +85,9 @@
 		var deckCount = 10;
 		var deckObject = [];
 		for (i=0;i<deckCount; i++) {
-			deckInfo = {"name": _menuType+" " + i, 'id': _menuType+"-" + i,
-			'description': "Description here"};
+			deckInfo = {"name": _menuType+" " + i, 'id': _menuType+"-" + i, 'description': "Description here"};
 			deckObject[i]= deckInfo;
 		}
-		//console.log(deckObject);
 		return deckObject;
 	}
 
@@ -99,13 +97,16 @@
 			console.log(_collections[key]);
 			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + _collections[key].name + ' ('+_collections[key].decklist.length+ ')</h2></div></div>\n';
 		}
-
+		for(i=1; i<10; i++){
+			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>Empty Collection '+i+' (0)</h2></div></div>\n';
+		}
 		return collectionsMenuHTML;
 	}
 
 	var deck = {};
+	globalJSON = {};
 	function defineDeck(d){
-		deck = d.decks["2"].cards;
+		deck = d.decks["1"].cards;
 		cardCount = deck.length;
 		showNextCard();
 	};
@@ -139,7 +140,6 @@
 			$('.collectionsList .deck').click(function(){
 				showScreen("decks");
 			});
-
 			defineDeck(d);
     	}).fail( function(d, textStatus, error) {
         	console.error("getJSON failed, status: " + textStatus + ", error: "+error)
