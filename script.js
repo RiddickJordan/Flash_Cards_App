@@ -1,6 +1,6 @@
 (function(window, $, undefined){
 
-	var lastScreen = $('.navIntro, .navCollectionMenu, .navDeckMenu, .navTitle, .navCard, .navWrapUp');
+	var lastScreen = $('.navIntro, .navCollectionMenu, .navDeckMenu, .navTitle, .navCard, .navWrapUp, .transitions');
 	var nextScreen;
 	var lastState = "intro";
 	menuBtnDestination = "decks";
@@ -46,8 +46,10 @@
 		$('.header').removeClass(lastState);
 		$('.header').addClass(_state);
 		lastState = _state;
+		$('.transitions').toggle();
 		$(lastScreen).toggle();
 		$(nextScreen).fadeToggle();
+		$('.transitions').fadeToggle();
 		lastScreen = nextScreen;
 	}
 
@@ -94,7 +96,6 @@
 	function buildCollectionMenu(_collections){
 		collectionsMenuHTML = '';
 		for(var key in _collections){
-			console.log(_collections[key]);
 			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + _collections[key].name + ' ('+_collections[key].decklist.length+ ')</h2></div></div>\n';
 		}
 		for(i=1; i<10; i++){
@@ -135,14 +136,14 @@
 	function init(){
 		//Load JSON that will define cards
 		$.getJSON("sd_v2.json", function(d) {
-			console.log(d);
+			//console.log(d);
 			$('.collectionsList').html(buildCollectionMenu(d.collections));
 			$('.collectionsList .deck').click(function(){
 				showScreen("decks");
 			});
 			defineDeck(d);
     	}).fail( function(d, textStatus, error) {
-        	console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+        	alert("getJSON failed, status: " + textStatus + ", error: "+error)
     	});
 
 		//Generate Collections Menu
