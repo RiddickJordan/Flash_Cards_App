@@ -10,7 +10,7 @@
 		$('.card').toggleClass("answerTint");
 	}
 
-	function showScreen(_state){
+	function showScreen(_state, _id){
 		switch (_state){
 			case "intro":
 				nextScreen = $(".navIntro");
@@ -27,6 +27,9 @@
 				break;
 			case "title":
 				nextScreen = $('.navTitle');
+				setDeck(_id);
+				console.log(_id);
+				//que up correct deck
 				break;
 			case "cards":
 				$('.title h1').text("REVIEW SESSION: Glaucoma Basics");
@@ -53,6 +56,23 @@
 		lastScreen = nextScreen;
 	}
 
+	function buildMenus(_collections){
+		collectionsMenuHTML = '';
+		deckMenuHTML = '';
+		for(var key in _collections){
+			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + _collections[key].name + ' ('+_collections[key].decklist.length+ ')</h2></div></div>\n';
+			for (var i = 0; i < _collections[key].decklist.length; i++){
+				deckMenuHTML += '<div id="'+ _collections[key].decklist[i] +'"class="deck '+_collections[key].name+'"><div class="icon"><div class="circle"></div></div><div class="title"><h2>deck id is ' + _collections[key].decklist[i] + '</h2></div></div>\n';
+			}
+		}
+		for(i=1; i<10; i++){
+			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>Empty Collection '+i+' (0)</h2></div></div>\n';
+		}
+		$('.deckList').html(deckMenuHTML);
+		$('.collectionsList').html(collectionsMenuHTML);
+		//return collectionsMenuHTML;
+	}
+
 	var cardIndex = 0;
 	var cardCount = 0;
 	function showNextCard(){
@@ -72,45 +92,21 @@
 		}
 	}
 
-
-	function makeMenu (dataArray, type) {
-		menuCount = dataArray.length;
-		menuHTML = '';
-		for (i=0;i<menuCount; i++) {
-			if (i == 0) {menuHTML = menuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + 'Glaucoma Review' + '</h2></div></div>\n'; }
-			else{menuHTML = menuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + dataArray[i].name + '</h2></div></div>\n'; }
-		}
-		return menuHTML;
-	}
-
-	function getDecks(_menuType) {
-		var deckCount = 10;
-		var deckObject = [];
-		for (i=0;i<deckCount; i++) {
-			deckInfo = {"name": _menuType+" " + i, 'id': _menuType+"-" + i, 'description': "Description here"};
-			deckObject[i]= deckInfo;
-		}
-		return deckObject;
-	}
-
-	function buildCollectionMenu(_collections){
-		collectionsMenuHTML = '';
-		for(var key in _collections){
-			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + _collections[key].name + ' ('+_collections[key].decklist.length+ ')</h2></div></div>\n';
-		}
-		for(i=1; i<10; i++){
-			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>Empty Collection '+i+' (0)</h2></div></div>\n';
-		}
-		return collectionsMenuHTML;
-	}
-
 	var deck = {};
-	globalJSON = {};
+	var globalJSON = {};
 	function defineDeck(d){
-		deck = d.decks["1"].cards;
-		cardCount = deck.length;
+		globalJSON = d;
+	}
+
+	function setDeck(_id){
+		deck = globalJSON.decks[_id].cards;
+		cardCount = globalJSON.decks[_id].cardCount;
+		console.log(globalJSON.decks[_id]);
+		$('#name').text(globalJSON.decks[_id].name);
+		$('#description').text('DECK: '+ globalJSON.decks[_id].description);
+		$('#cardCount').text(globalJSON.decks[_id].cardCount + ' questions');
 		showNextCard();
-	};
+	}
 
 	function resizeMyText(_obj){
 		var $quote = _obj;
@@ -128,36 +124,24 @@
 	        $quote.css("font-size", "2rem");
 	    }
 	}
-	var theJSON = {};
-	function makeGlobal(_json){
-		theJSON = _json;
-	}
 
 	function init(){
 		//Load JSON that will define cards
 		$.getJSON("sd_v2.json", function(d) {
-			//console.log(d);
-			$('.collectionsList').html(buildCollectionMenu(d.collections));
+			buildMenus(d.collections);
 			$('.collectionsList .deck').click(function(){
 				showScreen("decks");
+			});
+			$('.deckList .deck').click(function(){
+				showScreen("title", this.id);
 			});
 			defineDeck(d);
     	}).fail( function(d, textStatus, error) {
         	alert("getJSON failed, status: " + textStatus + ", error: "+error)
     	});
-
-		//Generate Collections Menu
-		
-
-		//Generate Deck Menu
-		$('.deckList').html(makeMenu(getDecks('Deck'),'deck'));
-
-
 		//Navigation click handlers
 		
-		$('.deckList .deck').click(function(){
-			showScreen("title");
-		});
+		
 		$('.startDeck').click(function(){
 			showScreen("cards");
 		});
