@@ -3,62 +3,16 @@
 	var lastScreen = $('.navIntro, .navCollectionMenu, .navDeckMenu, .navTitle, .navCard, .navWrapUp, .transitions');
 	var nextScreen;
 	var lastState = "intro";
-	menuBtnDestination = "decks";
+	var menuBtnDestination = "decks";
 
-	function flipCard(_flipTo){
+	function flipCard(){
 		$(".question, .answer, .reveal, .confirm").toggle();
 		$('.card').toggleClass("answerTint");
 	}
 
-	function showScreen(_state, _id){
-		switch (_state){
-			case "intro":
-				nextScreen = $(".navIntro");
-				break;
-			case "collections":
-				$('.title h1').text("ShuffleDeck Collections");
-				nextScreen = $('.navCollectionMenu');
-				break;
-			case "decks":
-				$('.title h1').text("REVIEW SESSION: Glaucoma Basics");
-				$('.toMenu div').text("BACK");
-				menuBtnDestination = "collections";
-				nextScreen = $('.navDeckMenu');
-				break;
-			case "title":
-				nextScreen = $('.navTitle');
-				setDeck(_id);
-				console.log(_id);
-				//que up correct deck
-				break;
-			case "cards":
-				$('.title h1').text("REVIEW SESSION: Glaucoma Basics");
-				$('.toMenu div').text("DECKS");
-				cardIndex = 0;
-				showNextCard();
-				if( $('.card').hasClass("answerTint") ){
-					flipCard();
-				}
-				menuBtnDestination = "decks";
-				nextScreen = $('.navCard');
-				break;
-			case "wrapUp":
-				nextScreen = $('.navWrapUp');
-				break;
-		}
-		$('.header').removeClass(lastState);
-		$('.header').addClass(_state);
-		lastState = _state;
-		$('.transitions').toggle();
-		$(lastScreen).toggle();
-		$(nextScreen).fadeToggle();
-		$('.transitions').fadeToggle();
-		lastScreen = nextScreen;
-	}
-
 	function buildMenus(_collections){
-		collectionsMenuHTML = '';
-		deckMenuHTML = '';
+		var collectionsMenuHTML = '';
+		var deckMenuHTML = '';
 		for(var key in _collections){
 			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + _collections[key].name + ' ('+_collections[key].decklist.length+ ')</h2></div></div>\n';
 			for (var i = 0; i < _collections[key].decklist.length; i++){
@@ -70,7 +24,6 @@
 		}
 		$('.deckList').html(deckMenuHTML);
 		$('.collectionsList').html(collectionsMenuHTML);
-		//return collectionsMenuHTML;
 	}
 
 	var cardIndex = 0;
@@ -80,8 +33,8 @@
 			showScreen("wrapUp");
 		}
 		else{
-			thisQ = deck[cardIndex]['q']['image'] == "" ? '<p>' + deck[cardIndex]['q']['text'] + '</p>': '<img src="'+deck[cardIndex]['q']['image']+'">';
-			thisA = deck[cardIndex]['a']['image'] == "" ? '<p>' + deck[cardIndex]['a']['text'] + '</p>': '<img src="'+deck[cardIndex]['a']['image']+'">';
+			thisQ = deck[cardIndex]['q']['image'] === "" ? '<p>' + deck[cardIndex]['q']['text'] + '</p>': '<img src="'+deck[cardIndex]['q']['image']+'">';
+			thisA = deck[cardIndex]['a']['image'] === "" ? '<p>' + deck[cardIndex]['a']['text'] + '</p>': '<img src="'+deck[cardIndex]['a']['image']+'">';
 			$('.question .cardContent').html(thisQ);
 			$('.answer .cardContent').html(thisA);
 			$('.icon h5').text(""+(cardIndex+1)+" of "+cardCount);
@@ -125,6 +78,53 @@
 	    }
 	}
 
+	function showScreen(_state, _id){
+		switch (_state){
+			case "intro":
+				nextScreen = $(".navIntro");
+				break;
+			case "collections":
+				$('.title h1').text("ShuffleDeck Collections");
+				nextScreen = $('.navCollectionMenu');
+				break;
+			case "decks":
+				$('.title h1').text("REVIEW SESSION: Glaucoma Basics");
+				$('.toMenu div').text("BACK");
+				menuBtnDestination = "collections";
+				nextScreen = $('.navDeckMenu');
+				break;
+			case "title":
+				nextScreen = $('.navTitle');
+				setDeck(_id);
+				break;
+			case "cards":
+				$('.title h1').text("REVIEW SESSION: Glaucoma Basics");
+				$('.toMenu div').text("DECKS");
+				cardIndex = 0;
+				showNextCard();
+				if( $('.card').hasClass("answerTint") ){
+					flipCard();
+				}
+				menuBtnDestination = "decks";
+				nextScreen = $('.navCard');
+				break;
+			case "wrapUp":
+				nextScreen = $('.navWrapUp');
+				break;
+			default:
+				alert("switch case error");
+				break;
+		}
+		$('.header').removeClass(lastState);
+		$('.header').addClass(_state);
+		lastState = _state;
+		$('.transitions').toggle();
+		$(lastScreen).toggle();
+		$(nextScreen).fadeToggle();
+		$('.transitions').fadeToggle();
+		lastScreen = nextScreen;
+	}
+
 	function init(){
 		//Load JSON that will define cards
 		$.getJSON("sd_v2.json", function(d) {
@@ -137,7 +137,7 @@
 			});
 			defineDeck(d);
     	}).fail( function(d, textStatus, error) {
-        	alert("getJSON failed, status: " + textStatus + ", error: "+error)
+        	alert("getJSON failed, status: " + textStatus + ", error: "+error);
     	});
 		//Navigation click handlers
 		
