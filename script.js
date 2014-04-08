@@ -16,7 +16,7 @@
 		for(var key in _collections){
 			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + _collections[key].name + ' ('+_collections[key].decklist.length+ ')</h2></div></div>\n';
 			for (var i = 0; i < _collections[key].decklist.length; i++){
-				deckMenuHTML += '<div id="'+ _collections[key].decklist[i] +'"class="deck '+_collections[key].name+'"><div class="icon"><div class="circle"></div></div><div class="title"><h2>deck id is ' + _collections[key].decklist[i] + '</h2></div></div>\n';
+				deckMenuHTML += '<div id="'+ _collections[key].decklist[i] +'"class="deck '+_collections[key].name+'"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + globalJSON.decks[_collections[key].decklist[i]].name + '</h2></div></div>\n';
 			}
 		}
 		for(i=1; i<10; i++){
@@ -48,6 +48,7 @@
 	var deck = {};
 	var globalJSON = {};
 	function defineDeck(d){
+		console.log(d);
 		globalJSON = d;
 	}
 
@@ -58,6 +59,8 @@
 		$('#name').text(globalJSON.decks[_id].name);
 		$('#description').text('DECK: '+ globalJSON.decks[_id].description);
 		$('#cardCount').text(globalJSON.decks[_id].cardCount + ' questions');
+		$('.cardTopic').text('Topic: ' + globalJSON.decks[_id].name);
+		$('.title h1').text("REVIEW SESSION: "+ globalJSON.decks[_id].name);
 		showNextCard();
 	}
 
@@ -98,7 +101,6 @@
 				setDeck(_id);
 				break;
 			case "cards":
-				$('.title h1').text("REVIEW SESSION: Glaucoma Basics");
 				$('.toMenu div').text("DECKS");
 				cardIndex = 0;
 				showNextCard();
@@ -118,6 +120,8 @@
 		$('.header').removeClass(lastState);
 		$('.header').addClass(_state);
 		lastState = _state;
+
+		//screen transitions ghetto rigged here!//
 		$('.transitions').toggle();
 		$(lastScreen).toggle();
 		$(nextScreen).fadeToggle();
@@ -128,6 +132,7 @@
 	function init(){
 		//Load JSON that will define cards
 		$.getJSON("sd_v2.json", function(d) {
+			defineDeck(d);
 			buildMenus(d.collections);
 			$('.collectionsList .deck').click(function(){
 				showScreen("decks");
@@ -135,12 +140,11 @@
 			$('.deckList .deck').click(function(){
 				showScreen("title", this.id);
 			});
-			defineDeck(d);
+			
     	}).fail( function(d, textStatus, error) {
         	alert("getJSON failed, status: " + textStatus + ", error: "+error);
     	});
 		//Navigation click handlers
-		
 		
 		$('.startDeck').click(function(){
 			showScreen("cards");
@@ -152,7 +156,7 @@
 			showScreen(menuBtnDestination);
 		});
 
-    	//Set initial state of card system
+		//Set initial state of card system
 		$(".answer, .confirm, .wrapUp").toggle();
 
 		//Card interaction click handlers
