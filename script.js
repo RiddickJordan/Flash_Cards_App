@@ -21,6 +21,7 @@
 		}
 		for(i=1; i<10; i++){
 			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>Empty Collection '+i+' (0)</h2></div></div>\n';
+			deckMenuHTML += '<div id="1" class="deck '+_collections[key].name+'"><div class="icon"><div class="circle"></div></div><div class="title"><h2>Empty Deck'+i+'</h2></div></div>\n';
 		}
 		$('.deckList').html(deckMenuHTML);
 		$('.collectionsList').html(collectionsMenuHTML);
@@ -48,7 +49,7 @@
 	var deck = {};
 	var globalJSON = {};
 	function defineDeck(d){
-		console.log(d);
+		//console.log(d);
 		globalJSON = d;
 	}
 
