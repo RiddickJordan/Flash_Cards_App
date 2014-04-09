@@ -14,9 +14,9 @@
 		var collectionsMenuHTML = '';
 		var deckMenuHTML = '';
 		for(var key in _collections){
-			collectionsMenuHTML = collectionsMenuHTML +'<div class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + _collections[key].name + ' ('+_collections[key].decklist.length+ ')</h2></div></div>\n';
+			collectionsMenuHTML = collectionsMenuHTML +'<div id="'+key+'"class="deck"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + _collections[key].name + ' ('+_collections[key].decklist.length+ ')</h2></div></div>\n';
 			for (var i = 0; i < _collections[key].decklist.length; i++){
-				deckMenuHTML += '<div id="'+ _collections[key].decklist[i] +'"class="deck '+_collections[key].name+'"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + globalJSON.decks[_collections[key].decklist[i]].name + '</h2></div></div>\n';
+				deckMenuHTML += '<div id="'+ _collections[key].decklist[i] +'"class="deck '+key+'"><div class="icon"><div class="circle"></div></div><div class="title"><h2>' + globalJSON.decks[_collections[key].decklist[i]].name + '</h2></div></div>\n';
 			}
 		}
 		for(i=1; i<10; i++){
@@ -82,6 +82,21 @@
 	    }
 	}
 
+	var lastFilter = '.demo_1, .demo_2';  //UPDATE THIS
+	function filterDecks(_filter){
+		if($('#'+_filter).hasClass('deck')){
+			$('.title h1').text(globalJSON.collections[_filter].name);
+			_filter = '.' + _filter;
+			$(lastFilter).toggle();
+			$(_filter).toggle();
+			lastFilter = _filter;
+		}
+		else{
+			$('.title h1').text(globalJSON.collections[lastFilter.split('.')[1]].name);
+		}
+
+	}
+
 	function showScreen(_state, _id){
 		switch (_state){
 			case "intro":
@@ -92,10 +107,11 @@
 				nextScreen = $('.navCollectionMenu');
 				break;
 			case "decks":
-				$('.title h1').text("REVIEW SESSION: Glaucoma Basics");
+				//$('.title h1').text("REVIEW SESSION: Glaucoma Basics");
 				$('.toMenu div').text("BACK");
 				menuBtnDestination = "collections";
 				nextScreen = $('.navDeckMenu');
+				filterDecks(_id);
 				break;
 			case "title":
 				nextScreen = $('.navTitle');
@@ -136,7 +152,7 @@
 			defineDeck(d);
 			buildMenus(d.collections);
 			$('.collectionsList .deck').click(function(){
-				showScreen("decks");
+				showScreen("decks", this.id);
 			});
 			$('.deckList .deck').click(function(){
 				showScreen("title", this.id);
